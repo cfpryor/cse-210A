@@ -1,4 +1,4 @@
-# Probablistic Programming Languages Comparisons
+# A Comparison of Probablistic Programming Languages
 
 Comparison between different probablistic programming languages. This repository will convert PSL examples into other probablistic programming languages (PPL).
 
