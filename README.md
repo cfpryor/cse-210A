@@ -27,6 +27,15 @@ This is broken into two phases: initialization and running.
 
 #### Initialization
 
+First begin by creating a postgreSQL database and user for tuffy.
+
+```
+createuser -s tuffy
+createdb tuffy --password
+```
+
+Use tuffy as the password.
+
 During the initialization phase, data is gathered for PSL and converts to the other PPLs. Since this repository converts psl examples into other frameworks, use the psl-example directory names to specify which examples you want to run:
 
 ```
