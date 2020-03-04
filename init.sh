@@ -22,13 +22,15 @@ PSL_FETCH_SCRIPT=${DATA}'fetchData.sh'
 function main() {
    trap exit SIGINT
 
+   experiments=$@
+
    # Make the bin directory if it doesn't exist
    mkdir -p ${BIN}
 
    psl::load
    tuffy::load
 
-   for experiment in $EXPERIMENTS; do
+   for experiment in ${experiments}; do
       echo 'INFO: Working on setting up '${experiment}
       getData::psl ${PSL_EXAMPLES}${experiment}'/'${PSL_FETCH_SCRIPT} 
       getData::tuffy ${TUFFY_EXAMPLES}${experiment}'/' ${PSL_EXAMPLES}${experiment}'/'
