@@ -1,8 +1,8 @@
 # A Comparison of Probablistic Programming Languages
 
-Comparison between different probablistic programming languages. This repository will convert PSL examples into other probablistic programming languages (PPL).
+Comparison between different probablistic programming languages. This repository will convert probablistic soft logic (PSL) examples into other probablistic programming languages (PPL).
 
-1) Probablistic Soft Logic (PSL)
+1) Probablistic Soft Logic
 
    - Website: https://psl.linqs.org
    - Code: https://github.com/linqs
@@ -15,7 +15,11 @@ Comparison between different probablistic programming languages. This repository
 
 ### Prerequisites
 
-PSL must be installed on your machine. Check out the main website (https://psl.linqs.org) for an installation guide.
+1) PSL (https://psl.linqs.org)
+
+2) Java virtual machine (https://www.java.com/en/download/manual.jsp)
+
+3) PostgreSQL (https://www.postgresql.org/download/)
 
 ### Running
 
