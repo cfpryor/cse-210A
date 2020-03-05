@@ -28,3 +28,4 @@ inferred-predicates/
 psl-examples/
 tuffy-examples/
 bin/
+__pycache__/

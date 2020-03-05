@@ -9,20 +9,23 @@ TUFFY_PREPARE='prepare-tuffy.py'
 PSL_EXAMPLES='psl-examples/'
 
 function main() {
-   for experiment in ${experiments}; do
+  experiments=$@ 
+
+  for experiment in ${experiments}; do
       echo 'INFO: Converting data for '${experiment}
-      getData::tuffy ${TUFFY_EXAMPLES}${experiment}'/' ${PSL_EXAMPLES}${experiment}'/'
+      getData::tuffy ${TUFFY_EXAMPLES} ${PSL_EXAMPLES} ${experiment}
    done
 }
 
 function getData::tuffy() {
-   tuffyexamplepath=$1
-   pslexamplepath=$2
+   tuffypath=$1
+   pslpath=$2
+   experiment=$3
 
    pushd . > /dev/null
 
    cd "${SCRIPTS}"
-   python3 "${TUFFY_PREPARE}" ${tuffyexamplepath} ${pslexamplepath}
+   python3 "${TUFFY_PREPARE}" '../'${tuffypath} '../'${pslpath} ${experiment}
 
    popd > /dev/null
 }
