@@ -1,7 +1,5 @@
 #!/bin/bash
 
-EXPERIMENTS='simple-acquaintances jester'
-
 # Path variables
 BIN='bin/'
 DATA='data/'
@@ -14,6 +12,10 @@ TUFFY_ZIP='tuffy-0.4-july2014.zip'
 TUFFY_URL='http://i.stanford.edu/hazy/tuffy/download/'${TUFFY_ZIP}
 TUFFY_EXAMPLES='tuffy-examples/'
 TUFFY_PREPARE='prepare-tuffy.py'
+TUFFY_PREDICATES='predicates.txt'
+TUFFY_MODEL='prog.mln'
+TUFFY_QUERY='query.db'
+TUFFY_CONF='tuffy.conf'
 
 PSL_EXAMPLES='psl-examples/'
 PSL_URL='https://github.com/linqs/psl-examples.git'
@@ -64,6 +66,7 @@ function tuffy::load() {
    mv ${TUFFY_BIN}${TUFFY_JAR} ${BIN}${TUFFY_JAR} 
    rm -r ${TUFFY_BIN}
    rm ${TUFFY_ZIP}
+   cp ${SCRIPTS}${TUFFY_CONF} ${BIN}
 
    mkdir -p ${TUFFY_EXAMPLES}
 }
@@ -91,12 +94,17 @@ function getData::tuffy() {
    mkdir -p ${tuffyexamplepath}${DATA}
    mkdir -p ${tuffyexamplepath}${CLI}
 
-   pushd . > /dev/null
+   if [ ! -f "${tuffyexamplepath}${CLI}${TUFFY_PREDICATES}" ] ; then
+      touch ${tuffyexamplepath}${CLI}${TUFFY_PREDICATES}
+   fi
 
-   cd "${SCRIPTS}"
-   python3 "${TUFFY_PREPARE}" ${tuffyexamplepath} ${pslexamplepath}
+   if [ ! -f "${tuffyexamplepath}${CLI}${TUFFY_MODEL}" ] ; then
+      touch ${tuffyexamplepath}${CLI}${TUFFY_MODEL}
+   fi
 
-   popd > /dev/null
+   if [ ! -f "${tuffyexamplepath}${CLI}${TUFFY_QUERY}" ] ; then
+      touch ${tuffyexamplepath}${CLI}${TUFFY_MODEL}
+   fi
 }
 
 main "$@"
