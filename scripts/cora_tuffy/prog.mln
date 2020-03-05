@@ -1,0 +1,20 @@
+// Closed predicates
+*Link(person, person)
+
+// Target predicate
+// The bang enforces a functional constraint.
+HasCat(person, cat!)
+
+// Rules
+1.0 HasCat(a, c), Link(a, b) => HasCat(b, c)
+1.0 HasCat(a, c), Link(b, a) => HasCat(b, c)
+
+// Per category rules
+
+1.0 HasCat(a, 1), Link(a, b) => HasCat(b, 1)
+1.0 HasCat(a, 2), Link(a, b) => HasCat(b, 2)
+1.0 HasCat(a, 3), Link(a, b) => HasCat(b, 3)
+1.0 HasCat(a, 4), Link(a, b) => HasCat(b, 4)
+1.0 HasCat(a, 5), Link(a, b) => HasCat(b, 5)
+1.0 HasCat(a, 6), Link(a, b) => HasCat(b, 6)
+1.0 HasCat(a, 7), Link(a, b) => HasCat(b, 7)

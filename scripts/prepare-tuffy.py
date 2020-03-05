@@ -9,25 +9,59 @@ import log
 CLI = 'cli'
 DATA = 'data'
 HELPER = 'predicates.txt'
+OUTFILE = 'evidence.db'
 
 EVAL = 'eval'
 LEARN = 'learn'
+
+FALSE = 'false'
+TRUE = 'true'
 
 H_PRED = 0
 H_SIZE = 1
 H_OPEN = 2
 H_FILE = 3
 H_PRIOR = 4
+H_TRUTH = 5
+
+def write_data(data, path):
+    os.makedirs(path, exist_ok=True)
+    with open(os.path.join(path, OUTFILE), 'w') as out_file:
+        out_file.write('\n'.join(data))
 
 def load_split(predicate, split):
-    if not os.path.isfile(os.path.join(split, predicate[H_FILE])):
-        logging.error("No file named %s in %s" % (predicate[H_FILE], split))
+    size = int(predicate[H_SIZE])
+    pred = predicate[H_PRED]
+    filename = predicate[H_FILE]
+    prior = predicate[H_PRIOR]
+    truth = predicate[H_TRUTH]
+
+    # TODO(connor) handle truth files
+    if truth == TRUE:
+        return []
+
+    if not os.path.isfile(os.path.join(split, filename)):
+        logging.error("No file named %s in %s" % (filename, split))
         return
 
-    with open(os.path.join(split, predicate[H_FILE]), 'r') as tsvfile:
+    tuffy_data = []
+    with open(os.path.join(split, filename), 'r') as tsvfile:
         reader = csv.reader(tsvfile, delimiter='\t')
+
         for line in reader:
-            print(line)
+            value = 1.0
+
+            if prior != FALSE:
+                value = float(prior)
+            elif len(line) < size:
+                value = float(line[-1])
+
+            if value == 1.0:
+                tuffy_data.append(pred + '(' + ', '.join(line[0:size]) + ')')
+            else:
+                tuffy_data.append(str(value) + ' ' + pred + '(' + ', '.join(line[0:size]) + ')')
+
+    return tuffy_data
 
 def load_helper(helper_file):
     helper = []
@@ -59,13 +93,16 @@ def main(tuffy_dir, psl_dir, experiment):
             continue
 
         for phase in [EVAL, LEARN]:
-            split = os.path.join(psl_experiment, DATA, experiment, split_dir, phase)
-            if not os.path.isdir(split):
-                logging.error("No eval/learn in %s" % (os.path.join(psl_experiment, DATA, experiment, split_dir)))
+            p_split = os.path.join(psl_experiment, DATA, experiment, split_dir, phase)
+            t_split = os.path.join(tuffy_experiment, DATA, experiment, split_dir, phase)
+            data = []
+            if not os.path.isdir(p_split):
+                logging.error("No eval/learn in %s" % (os.path.join(psl_experiment, DATA, experiment, p_split_dir)))
                 continue
 
             for predicate in helper:
-                data = load_split(predicate, split)
+                data = data + load_split(predicate, p_split)
+            write_data(data, t_split)
 
 def _load_args(args):
     executable = args.pop(0)
