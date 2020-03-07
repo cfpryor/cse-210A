@@ -12,11 +12,11 @@ function main() {
 
    for experiment in ${experiments}; do
       echo "INFO: Converting data for ${experiment}"
-      getData::tuffy ${TUFFY_EXAMPLES} ${PSL_EXAMPLES} ${experiment}
+      convertData::tuffy ${TUFFY_EXAMPLES} ${PSL_EXAMPLES} ${experiment}
    done
 }
 
-function getData::tuffy() {
+function convertData::tuffy() {
    local tuffypath=$1
    local pslpath=$2
    local experiment=$3

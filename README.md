@@ -54,7 +54,14 @@ Now that the psl data has been gathered, it is now time to convert it to the oth
 
 Three files are required for tuffy to run:
 
-1) predicates.txt - A helper file for converting PSL data.
+1) predicates.txt - A helper file for converting PSL data. Tab separated formatting for the predicates:
+```
+Name	Size	Open/Closed	Filename	Prior	Truth
+```
+Example:
+```
+Friends    2    open friends_target.txt    0.5   false
+```
 2) prog.mln - A file containing the model in Tuffy syntax.
 3) query.db - A file specifying what are the target predicates.
 
