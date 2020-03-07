@@ -1,6 +1,6 @@
 # A Comparison of Probablistic Programming Languages
 
-Comparison between different probablistic programming languages. This repository will convert probablistic soft logic (PSL) examples into other probablistic programming languages (PPL).
+This repository will convert the desired datasets from probablistic soft logic (PSL) into the other probablistic programming languages (PPL), run the desired datasets for each PPL, and provide results for analysis. Current PPLs supported:
 
 1) Probablistic Soft Logic
 
@@ -23,7 +23,7 @@ Comparison between different probablistic programming languages. This repository
 
 ### Running
 
-This is broken into three phases: initialization, running, and evaluation.
+Running is broken into three phases: initialization, running, and evaluation.
 
 #### Initialization
 
@@ -36,31 +36,31 @@ createdb tuffy --password
 
 Use **tuffy** as the password.
 
-Data is gathered from psl-examples (which is already in a PSL formatting) and converted to the other PPL's formatting. Since this repository converts psl examples into other frameworks, use the psl-example directory names to specify which examples you want to run:
+The data is gathered from psl-examples (which is already in a PSL formatting) and converted into the other PPL's formatting. Since this repository converts psl examples into other frameworks, use the psl-example directory names to specify which examples you want to run:
 
 ```
 ./init <example name> ...
 ```
 
-For example if you want to run the psl-examples cora, use the following command:
+For example if you want to run **cora** from the psl-examples, use the following command:
 
 ```
 ./init cora
 ```
 
-Now that the psl data has been gathered, it is now time to convert it to the other PPLs. For this a few datafiles are needed to aid in the process:
+Now that the psl data has been gathered, it is now time to convert it to the other PPLs. For this a few data files are needed:
 
 ##### Tuffy
 
-Three files are required for tuffy to run
+Three files are required for tuffy to run:
 
 1) predicates.txt - A helper file for converting PSL data.
 2) prog.mln - A file containing the model in Tuffy syntax.
 3) query.db - A file specifying what are the target predicates.
 
-and are required to be put into there respective experiment directory **./tuffy-examples/[EXPERIMENT]/**.
+These are required and should be put into their respective directories: **./tuffy-examples/[EXPERIMENT]/**.
 
-An example of these files can be seen in **./scripts/tuffy-cora/**. To run the cora example use the following command:
+An example of the formatting for these files can be seen in **./scripts/tuffy-cora/**. To run the cora example use the following command:
 
 ```
 cp scripts/cora-tuffy/* tuffy-examples/cora/
@@ -68,12 +68,13 @@ cp scripts/cora-tuffy/* tuffy-examples/cora/
 
 ##### Data Conversion
 
-As the final step in the initialization phase, data is convered from the PSL formatting to the other PPL's formatting with the following command:
+As the final step in the initialization phase, data is convered from the PSL formatting to the other PPL's formatting:
 
 ```
 ./convert <example name> ...
 ```
-For example if you want to run the psl-examples cora, use the following command:
+
+For example if you want to run **cora**, use the following command:
 
 ```
 ./convert cora
@@ -81,4 +82,14 @@ For example if you want to run the psl-examples cora, use the following command:
 
 #### Running
 
-During the running phase, the desired examples are run for all of the PPLs.
+During the running phase, the desired examples are run for the PPLs:
+
+```
+./run <example name> ...
+```
+
+For example if you want to run **cora** from the psl-examples, use the following command:
+
+```
+./run cora
+```
