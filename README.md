@@ -56,11 +56,11 @@ Three files are required for tuffy to run:
 
 1) predicates.txt - A helper file for converting PSL data. Tab separated formatting for the predicates:
 ```
-Name	Size	Open/Closed	Filename	Prior	Truth
+Name	Size	Open/Closed	Filename	Prior	Truth	Force
 ```
 Example:
 ```
-Friends    2    open friends_target.txt    0.5   false
+Friends    2    open friends_target.txt    0.5   false	true
 ```
 2) prog.mln - A file containing the model in Tuffy syntax.
 3) query.db - A file specifying what are the target predicates.

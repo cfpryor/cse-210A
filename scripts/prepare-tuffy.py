@@ -22,6 +22,7 @@ H_OPEN = 2
 H_FILE = 3
 H_PRIOR = 4
 H_TRUTH = 5
+H_FORCE = 6
 
 def write_data(data, path):
     os.makedirs(path, exist_ok=True)
@@ -34,6 +35,7 @@ def load_split(predicate, split):
     filename = predicate[H_FILE]
     prior = predicate[H_PRIOR]
     truth = predicate[H_TRUTH]
+    force = predicate[H_FORCE]
 
     # TODO(connor) handle truth files
     if truth == TRUE:
@@ -50,13 +52,17 @@ def load_split(predicate, split):
         for line in reader:
             value = 1.0
 
-            if prior != FALSE:
+            if force == TRUE:
+                value = 1.0
+            elif prior != FALSE:
                 value = float(prior)
-            elif len(line) < size:
+            elif len(line) > size:
                 value = float(line[-1])
 
-            if value == 1.0:
+            if value == 1.0 or value == 1:
                 tuffy_data.append(pred + '(' + ', '.join(line[0:size]) + ')')
+            elif value == 0.0 or value == 0:
+                tuffy_data.append('!' + pred + '(' + ', '.join(line[0:size]) + ')')
             else:
                 tuffy_data.append(str(value) + ' ' + pred + '(' + ', '.join(line[0:size]) + ')')
 

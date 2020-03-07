@@ -1,5 +1,7 @@
-Knows	2	closed	knows_obs.txt	false	false
-Prior	1	closed	prior_obs.txt	false	false
-Trusts	2	open	trusts_obs.txt	false	false
-Trusts	2	open	trusts_target.txt	0.5	false
-Trusts	2	open	trusts_truth.txt	false	true
+Knows	2	closed	knows_obs.txt	false	false	false
+Prior	1	closed	prior_obs.txt	false	false	false
+Trusts	2	open	trusts_truth.txt	false	true	false
+Trusts	2	open	trusts_obs.txt	false	false	false
+Trusts	2	open	trusts_target.txt	0.5	false	false
+ScopeTrusts	2	open	trusts_obs.txt	false	false	true
+ScopeTrusts	2	open	trusts_target.txt	0.5	false	true
