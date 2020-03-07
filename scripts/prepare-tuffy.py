@@ -6,7 +6,6 @@ import sys
 
 import log
 
-CLI = 'cli'
 DATA = 'data'
 HELPER = 'predicates.txt'
 OUTFILE = 'evidence.db'
@@ -82,7 +81,7 @@ def main(tuffy_dir, psl_dir, experiment):
     tuffy_experiment = os.path.join(tuffy_dir, experiment)
     psl_experiment = os.path.join(psl_dir, experiment)
 
-    helper = load_helper(os.path.join(tuffy_experiment, CLI, HELPER))
+    helper = load_helper(os.path.join(tuffy_experiment, HELPER))
 
     if experiment not in os.listdir(os.path.join(psl_experiment, DATA)):
         logging.error("No data directory named %s in %s" % (experiment, os.path.join(psl_experiment, DATA)))

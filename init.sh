@@ -3,7 +3,6 @@
 # Path variables
 BIN='bin/'
 DATA='data/'
-CLI='cli/'
 SCRIPTS='scripts/'
 
 TUFFY_BIN='tuffy-0.3-jun2014/'
@@ -92,18 +91,17 @@ function getData::tuffy() {
    pslexamplepath=$2
    mkdir -p ${tuffyexamplepath}
    mkdir -p ${tuffyexamplepath}${DATA}
-   mkdir -p ${tuffyexamplepath}${CLI}
 
-   if [ ! -f "${tuffyexamplepath}${CLI}${TUFFY_PREDICATES}" ] ; then
-      touch ${tuffyexamplepath}${CLI}${TUFFY_PREDICATES}
+   if [ ! -f "${tuffyexamplepath}${TUFFY_PREDICATES}" ] ; then
+      touch ${tuffyexamplepath}${TUFFY_PREDICATES}
    fi
 
-   if [ ! -f "${tuffyexamplepath}${CLI}${TUFFY_MODEL}" ] ; then
-      touch ${tuffyexamplepath}${CLI}${TUFFY_MODEL}
+   if [ ! -f "${tuffyexamplepath}${TUFFY_MODEL}" ] ; then
+      touch ${tuffyexamplepath}${TUFFY_MODEL}
    fi
 
-   if [ ! -f "${tuffyexamplepath}${CLI}${TUFFY_QUERY}" ] ; then
-      touch ${tuffyexamplepath}${CLI}${TUFFY_MODEL}
+   if [ ! -f "${tuffyexamplepath}${TUFFY_QUERY}" ] ; then
+      touch ${tuffyexamplepath}${TUFFY_QUERY}
    fi
 }
 
