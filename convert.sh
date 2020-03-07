@@ -1,31 +1,28 @@
 #!/bin/bash
 
-# Path variables
-SCRIPTS='scripts/'
+readonly BASE_DIR=$(realpath "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )")
 
-TUFFY_EXAMPLES='tuffy-examples/'
-TUFFY_PREPARE='prepare-tuffy.py'
-
-PSL_EXAMPLES='psl-examples/'
+readonly TUFFY_EXAMPLES=${BASE_DIR}'/tuffy-examples'
+readonly PSL_EXAMPLES=${BASE_DIR}'/psl-examples'
 
 function main() {
-  experiments=$@ 
+   local experiments=$@ 
 
-  for experiment in ${experiments}; do
+   for experiment in ${experiments}; do
       echo 'INFO: Converting data for '${experiment}
       getData::tuffy ${TUFFY_EXAMPLES} ${PSL_EXAMPLES} ${experiment}
    done
 }
 
 function getData::tuffy() {
-   tuffypath=$1
-   pslpath=$2
-   experiment=$3
+   local tuffypath=$1
+   local pslpath=$2
+   local experiment=$3
 
    pushd . > /dev/null
 
-   cd "${SCRIPTS}"
-   python3 "${TUFFY_PREPARE}" '../'${tuffypath} '../'${pslpath} ${experiment}
+   cd ${BASE_DIR}/scripts
+   python3 prepare-tuffy.py ${tuffypath} ${pslpath} ${experiment}
 
    popd > /dev/null
 }
