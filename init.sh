@@ -10,15 +10,15 @@ readonly AVAILABLE_MEM_KB=$(cat /proc/meminfo | grep 'MemTotal' | sed 's/^[^0-9]
 readonly JAVA_MEM_GB=$((${AVAILABLE_MEM_KB} / 1024 / 1024 / 5 * 5 - 5))
 
 # Tuffy path variables
-readonly TUFFY_EXAMPLES=${BASE_DIR}'/tuffy-examples'
-readonly TUFFY_URL='http://i.stanford.edu/hazy/tuffy/download/tuffy-0.4-july2014.zip'
-readonly TUFFY_BIN=${BASE_DIR}'/tuffy-0.3-jun2014'
-readonly TUFFY_ZIP=${BASE_DIR}'/tuffy-0.4-july2014.zip'
+readonly TUFFY_EXAMPLES="${BASE_DIR}/tuffy-examples"
+readonly TUFFY_URL="http://i.stanford.edu/hazy/tuffy/download/tuffy-0.4-july2014.zip"
+readonly TUFFY_BIN="${BASE_DIR}/tuffy-0.3-jun2014"
+readonly TUFFY_ZIP="${BASE_DIR}/tuffy-0.4-july2014.zip"
 
 # PSL path variables
 readonly PSL_EXAMPLES="${BASE_DIR}/psl-examples"
-readonly PSL_URL='https://github.com/linqs/psl-examples.git'
-readonly PSL_FETCH_SCRIPT='data/fetchData.sh'
+readonly PSL_URL="https://github.com/linqs/psl-examples.git"
+readonly PSL_FETCH_SCRIPT="data/fetchData.sh"
 
 function main() {
    trap exit SIGINT
@@ -29,17 +29,17 @@ function main() {
    tuffy::load
 
    for experiment in ${experiments}; do
-      echo 'INFO: Working on setting up '${experiment}
-      getData::psl ${PSL_EXAMPLES}'/'${experiment}
-      prepare::psl ${PSL_EXAMPLES}'/'${experiment}
-      getData::tuffy ${TUFFY_EXAMPLES}'/'${experiment}
+      echo "INFO: Working on setting up ${experiment}"
+      getData::psl "${PSL_EXAMPLES}/${experiment}"
+      prepare::psl "${PSL_EXAMPLES}/${experiment}"
+      getData::tuffy "${TUFFY_EXAMPLES}/${experiment}"
    done
 }
 
 function psl::load() {
-   echo 'INFO: Fetching PSL...'
+   echo "INFO: Fetching PSL..."
    if [ -d "${PSL_EXAMPLES}" ] ; then
-      echo 'PSL exists, skipping request'
+      echo "PSL exists, skipping request"
       return
    fi
 
@@ -48,15 +48,15 @@ function psl::load() {
 
 
 function tuffy::load() {
-   echo 'INFO: Fetching Tuffy...'
+   echo "INFO: Fetching Tuffy..."
    if [ -f "${BASE_DIR}/scripts/tuffy.jar" ] ; then
-      echo 'Jar exists, skipping request'
+      echo "Jar exists, skipping request"
       return
    fi
 
    curl -O ${TUFFY_URL}
    unzip ${TUFFY_ZIP}
-   mv ${TUFFY_BIN}'/tuffy.jar' ${BASE_DIR}'/scripts/tuffy.jar' 
+   mv ${TUFFY_BIN}/tuffy.jar ${BASE_DIR}/scripts/tuffy.jar 
    rm -r ${TUFFY_BIN}
    rm ${TUFFY_ZIP}
 
@@ -65,10 +65,10 @@ function tuffy::load() {
 
 function getData::psl() {
    local experiment=$1
-   local datapath=${experiment}'/'${PSL_FETCH_SCRIPT}
+   local datapath="${experiment}/${PSL_FETCH_SCRIPT}"
 
    if [ ! -f "${datapath}" ] ; then
-      echo 'No fetch script, skipping request'
+      echo "No fetch script, skipping request"
       return
    fi
 
@@ -117,18 +117,18 @@ function getData::tuffy() {
    local path=$1
    local experiment=$(basename ${path})
    mkdir -p ${path}
-   mkdir -p ${path}'/data'
+   mkdir -p ${path}/data
 
    if [ ! -f "${path}/predicates.txt" ] ; then
-      touch ${path}'/predicates.txt'
+      touch ${path}/predicates.txt
    fi
 
    if [ ! -f "${path}/prog.mln" ] ; then
-      touch ${path}'/prog.mln'
+      touch ${path}/prog.mln
    fi
 
    if [ ! -f "${path}/query.db" ] ; then
-      touch ${path}'/query.db'
+      touch ${path}/query.db
    fi
 
    if [ -d "${BASE_DIR}/scripts/tuffy/${experiment}" ] ; then
