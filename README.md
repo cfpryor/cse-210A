@@ -60,11 +60,7 @@ Three files are required for tuffy to run:
 
 These are required and should be put into their respective directories: **./tuffy-examples/[EXPERIMENT]/**.
 
-An example of the formatting for these files can be seen in **./scripts/tuffy-cora/**. To run the cora example use the following command:
-
-```
-cp scripts/cora-tuffy/* tuffy-examples/cora/
-```
+An example of the formatting for these files can be seen in **./scripts/tuffy/cora/**. If these files exist in the repo they will automatically be coppied into the correct location.
 
 ##### Data Conversion
 
