@@ -1,5 +1,8 @@
 #!/bin/bash
 
+readonly BASE_DIR=$(realpath "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )")
+readonly PSL_EXAMPLES="${BASE_DIR}/psl-examples"
+
 BIN='bin/'
 DATA='data/'
 EVAL='eval/'
@@ -26,10 +29,33 @@ function main() {
          t_log='../'${split}${EVAL}${TUFFY_LOG}
 
          echo 'INFO: Running Tuffy for '${experiment}' split '${split}
-         run::tuffy ${t_prog} ${t_evidence} ${t_query} ${t_results} ${t_log}
+         #run::tuffy ${t_prog} ${t_evidence} ${t_query} ${t_results} ${t_log}
          echo 'INFO: Running PSL for '${experiment}' split '${split}
-      done 
+         run::psl ${experiment} $(basename ${split})
+      done
    done
+}
+
+function run::psl(){
+   local cli_dir=${PSL_EXAMPLES}'/'$1'/cli'
+   local split_dir=${PSL_EXAMPLES}'/'$1'/data/'$1'/'$2
+   local tmp_dir=${PSL_EXAMPLES}'/'$1'/data/'$1'/tmp'
+   local log=${split_dir}'/out.txt'
+   local err=${split_dir}'/out.err'
+
+   if [ -d ${tmp_dir} ] ; then
+      rm -r ${tmp_dir}
+   fi
+
+   cp -r ${split_dir} ${tmp_dir}
+
+   pushd . > /dev/null
+
+   cd "${cli_dir}"
+   time ./run.sh > ${log} 2> ${err}
+   mv 'inferred-predicates' ${split_dir}
+
+   popd > /dev/null
 }
 
 function run::tuffy(){
@@ -43,7 +69,7 @@ function run::tuffy(){
    pushd . > /dev/null
 
    cd "${BIN}"
-   /usr/bin/time -v java -jar tuffy.jar -i ${prog} -e ${evidence} -queryFile ${query} -r ${results} -marginal > ${log}
+   /usr/bin/time -v java -Xmx40G -Xms40G -jar tuffy.jar -i ${prog} -e ${evidence} -queryFile ${query} -r ${results} -marginal > ${log}
 
    popd > /dev/null
   
