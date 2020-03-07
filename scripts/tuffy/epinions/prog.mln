@@ -1,0 +1,57 @@
+// Closed predicates
+*Knows(person, person)
+*Prior(constant)
+
+// Tuffy needs something to scope down the target.
+*ScopeTrusts(person, person)
+
+// Target predicate
+Trusts(person, person)
+
+// Try to scope it down.
+Trusts(a, b) := ScopeTrusts(a, b) .
+
+// Rules
+
+// FFpp
+1.0 Knows(a, b), Knows(b, c), Knows(a, c), Trusts(a, b), Trusts(b, c), a != b, b != c, a != c => Trusts(a, c)
+// FFpm
+1.0 Knows(a, b), Knows(b, c), Knows(a, c), Trusts(a, b), !Trusts(b, c), a != b, b != c, a != c => !Trusts(a, c)
+// FFmp
+1.0 Knows(a, b), Knows(b, c), Knows(a, c), !Trusts(a, b), Trusts(b, c), a != b, b != c, a != c => !Trusts(a, c)
+// FFmm
+1.0 Knows(a, b), Knows(b, c), Knows(a, c), !Trusts(a, b), !Trusts(b, c), a != b, b != c, a != c => Trusts(a, c)
+
+// FBpp
+1.0 Knows(a, b), Knows(c, b), Knows(a, c), Trusts(a, b), Trusts(c, b), a != b, b != c, a != c => Trusts(a, c)
+// FBpm
+1.0 Knows(a, b), Knows(c, b), Knows(a, c), Trusts(a, b), !Trusts(c, b), a != b, b != c, a != c => !Trusts(a, c)
+// FBmp
+1.0 Knows(a, b), Knows(c, b), Knows(a, c), !Trusts(a, b), Trusts(c, b), a != b, b != c, a != c => !Trusts(a, c)
+// FBmm
+1.0 Knows(a, b), Knows(c, b), Knows(a, c), !Trusts(a, b), !Trusts(c, b), a != b, b != c, a != c => Trusts(a, c)
+
+// BFpp
+1.0 Knows(b, a), Knows(b, c), Knows(a, c), Trusts(b, a), Trusts(b, c), a != b, b != c, a != c => Trusts(a, c)
+// BFpm
+1.0 Knows(b, a), Knows(b, c), Knows(a, c), Trusts(b, a), !Trusts(b, c), a != b, b != c, a != c => !Trusts(a, c)
+// BFmp
+1.0 Knows(b, a), Knows(b, c), Knows(a, c), !Trusts(b, a), Trusts(b, c), a != b, b != c, a != c => !Trusts(a, c)
+// BFmm
+1.0 Knows(b, a), Knows(b, c), Knows(a, c), !Trusts(b, a), !Trusts(b, c), a != b, b != c, a != c => Trusts(a, c)
+
+// BBpp
+1.0 Knows(b, a), Knows(c, b), Knows(a, c), Trusts(b, a), Trusts(c, b), a != b, b != c, a != c => Trusts(a, c)
+// BBpm
+1.0 Knows(b, a), Knows(c, b), Knows(a, c), Trusts(b, a), !Trusts(c, b), a != b, b != c, a != c => !Trusts(a, c)
+// BBmp
+1.0 Knows(b, a), Knows(c, b), Knows(a, c), !Trusts(b, a), Trusts(c, b), a != b, b != c, a != c => !Trusts(a, c)
+// BBmm
+1.0 Knows(b, a), Knows(c, b), Knows(a, c), !Trusts(b, a), !Trusts(c, b), a != b, b != c, a != c => Trusts(a, c)
+
+1.0 Knows(a, b), Knows(b, a), Trusts(a, b) => Trusts(b, a)
+1.0 Knows(a, b), Knows(b, a), !Trusts(a, b) => !Trusts(b, a)
+
+// two-sided prior
+1.0 Knows(a, b), Prior(0) => Trusts(a, b)
+1.0 Knows(a, b), Trusts(a, b) => Prior(0)
