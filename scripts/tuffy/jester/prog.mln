@@ -1,0 +1,19 @@
+// Closed predicates
+*AvgJokeRatingObs(joke)
+*AvgUserRatingObs(user)
+*Joke(joke)
+*RatingPrior(constant)
+*SimObsRating(joke, joke)
+*User(user)
+
+// Target predicate
+Rating(user, joke)
+
+// Rules
+1.0 SimObsRating(j1, j2), Rating(user, j1) => Rating(user, j2)
+1.0 User(user), Joke(joke), AvgUserRatingObs(user) => Rating(user, joke)
+1.0 User(user), Joke(joke), AvgJokeRatingObs(joke) => Rating(user, joke)
+1.0 User(user), Joke(joke), Rating(user, joke) => AvgUserRatingObs(user)
+1.0 User(user), Joke(joke), Rating(user, joke) => AvgJokeRatingObs(joke)
+1.0 User(user), Joke(joke), RatingPrior(0) => Rating(user, joke)
+1.0 Rating(user, joke) => RatingPrior(0)
