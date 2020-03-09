@@ -5,6 +5,10 @@ import os
 import sys
 
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import classification_report
 
 import log
 
@@ -22,36 +26,13 @@ H_FORCE = 6
 TRUE = 'true'
 FALSE = 'false'
 
-def align_data(predictions, labels, closed):
-    truth = []
-    pred = []
-    label_dict = {}
-    pred_dict = {}
+def evaluate_mse(predictions, labels):
+    return [mean_squared_error(labels, predictions)]
 
-    for label in labels:
-        label_dict[(label[0], label[1])] = label[2]
+def evaluate_catigorical(predictions, labels):
+    return [accuracy_score(labels, predictions), precision_score(labels, predictions)]
 
-    for prediction in predictions: 
-        pred_dict[(prediction[0], prediction[1])] = prediction[2]
-
-    if closed:
-        for label in pred_dict:
-            pred.append(float(pred_dict[label]))
-            if label in label_dict:
-                truth.append(float(label_dict[label]))
-            else:
-                truth.append(0.0)
-    else:
-        for label in label_dict:
-            truth.append(float(label_dict[label]))
-            if label in pred_dict:
-                pred.append(float(pred_dict[label]))
-            else:
-                pred.append(0.0)
-
-    return truth, pred
-
-def evaluate_f1(predictions, labels):
+def evaluate_f1(predictions, labels, negative = False):
     b_predictions = []
     b_labels = []
 
@@ -65,6 +46,17 @@ def evaluate_f1(predictions, labels):
             b_labels.append(1)
         else:
             b_labels.append(0)
+
+    if negative:
+        for index in range(len(b_predictions)):
+            if b_predictions[index] == 0:
+                b_predictions[index] = 1
+            else:
+                b_predictions[index] = 0
+            if b_labels[index] == 0:
+                b_labels[index] = 1
+            else:
+                b_labels[index] = 0
 
     tn, fp, fn, tp = confusion_matrix(b_labels, b_predictions).ravel()
 
@@ -94,6 +86,36 @@ def evaluate_f1(predictions, labels):
 
     return [accuracy, precision, recall, f1]
 
+def align_data(predictions, labels, closed):
+    truth = []
+    pred = []
+    label_dict = {}
+    pred_dict = {}
+    obs_dict = {}
+
+    for label in labels:
+        label_dict[(label[0], label[1])] = label[2]
+
+    for prediction in predictions: 
+        pred_dict[(prediction[0], prediction[1])] = prediction[2]
+
+    if closed:
+        for label in label_dict:
+            if label not in pred_dict:
+                continue
+            truth.append(float(label_dict[label]))
+            pred.append(float(pred_dict[label]))
+    else:
+        for label in label_dict:
+            truth.append(float(label_dict[label]))
+            if label in pred_dict:
+                pred.append(float(pred_dict[label]))
+            else:
+                pred.append(0.0)
+
+    return truth, pred
+
+
 def load_file(filename):
     output = []
 
@@ -107,17 +129,15 @@ def load_file(filename):
 def max_results(results):
     results.sort(key=lambda k: (int(k[0]), -float(k[2])))
     current = None
+    return_list = []
     for result in results:
         if current != result[0]:
             current = result[0]
-            if float(result[2]) > THRESHOLD:
-                result[2] = 1
-            else:
-                result[2] = 0
+            return_list.append([result[0], result[1], '1'])
         else:
-            result[2] = 0
+            return_list.append([result[0], result[1], '0'])
 
-    return results
+    return return_list
 
 def load_psl(psl_dir, experiment):
     results_dir = os.path.join(psl_dir, 'inferred-predicates')
@@ -160,28 +180,57 @@ def load_truth(experiment, split_dir):
     return truth
 
 def main(experiment, evaluation, psl_dir, tuffy_dir):
-    truth_split_dir = os.path.join(psl_dir, experiment, 'data', experiment, '0', 'eval')
-    ground_truth = load_truth(experiment, truth_split_dir)
+    results = []
 
-    psl_split_dir = os.path.join(psl_dir, experiment, 'data', experiment, '0', 'eval')
-    psl_data = load_psl(psl_split_dir, experiment)
-
-    tuffy_split_dir = os.path.join(tuffy_dir, experiment, 'data', experiment, '0', 'eval')
-    tuffy_data = load_tuffy(tuffy_split_dir, experiment)
-
-    if experiment in ['cora']:
-        psl_truth, psl_data = align_data(psl_data, ground_truth, True)
-        tuffy_truth, tuffy_data = align_data(tuffy_data, ground_truth, True)
-    else:
-        psl_truth, psl_data = align_data(psl_data, ground_truth, False)
-        tuffy_truth, tuffy_data = align_data(tuffy_data, ground_truth, False)
-
+    header = ['PPL', 'experiment','split']
     if evaluation in ['f1', 'accuracy', 'precision', 'recall']:
-        psl_results = evaluate_f1(psl_data, psl_truth)
-        tuffy_results = evaluate_f1(tuffy_data, tuffy_truth)
+        header = header + ['accuracy', 'precision', 'recall', 'f1', 'n_accuracy', 'n_precision', 'n_recall', 'n_f1']
+    else:
+        header.append(evaluation)
 
-    print(psl_results)
-    print(tuffy_results)
+    results.append("\t".join(header))
+
+    for split in os.listdir(os.path.join(psl_dir, experiment, 'data', experiment)):
+        if split == 'tmp' or not os.path.isdir(os.path.join(psl_dir, experiment, 'data', experiment, split)):
+            continue
+        truth_split_dir = os.path.join(psl_dir, experiment, 'data', experiment, split, 'eval')
+        ground_truth = load_truth(experiment, truth_split_dir)
+
+        psl_split_dir = os.path.join(psl_dir, experiment, 'data', experiment, split, 'eval')
+        psl_data = load_psl(psl_split_dir, experiment)
+
+        tuffy_split_dir = os.path.join(tuffy_dir, experiment, 'data', experiment, split, 'eval')
+        tuffy_data = load_tuffy(tuffy_split_dir, experiment)
+
+        if experiment in ['cora']:
+            psl_truth, psl_data = align_data(psl_data, ground_truth, True)
+            tuffy_truth, tuffy_data = align_data(tuffy_data, ground_truth, True)
+        else:
+            psl_truth, psl_data = align_data(psl_data, ground_truth, False)
+            tuffy_truth, tuffy_data = align_data(tuffy_data, ground_truth, False)
+
+        if evaluation in ['f1', 'accuracy', 'precision', 'recall']:
+            psl_results = evaluate_f1(psl_data, psl_truth)
+            tuffy_results = evaluate_f1(tuffy_data, tuffy_truth)
+
+            psl_results = psl_results + evaluate_f1(psl_data, psl_truth, negative = True)
+            tuffy_results = tuffy_results + evaluate_f1(tuffy_data, tuffy_truth, negative = True)
+
+        if evaluation in ['mse']:
+            psl_results = evaluate_mse(psl_data, psl_truth)
+            tuffy_results = evaluate_mse(tuffy_data, tuffy_truth)
+
+        if evaluation in ['cat', 'catigorical']:
+            psl_results = evaluate_catigorical(psl_data, psl_truth)
+            tuffy_results = evaluate_catigorical(tuffy_data, tuffy_truth)
+
+        psl_results = ['PSL', experiment, split] + psl_results
+        tuffy_results = ['Tuffy', experiment, split] + tuffy_results
+        results.append("\t".join([str(i) for i in psl_results]))
+        results.append("\t".join([str(i) for i in tuffy_results]))
+
+    with open('results.csv', 'w') as out_file:
+        out_file.write("\n".join(results))
 
 def _load_args(args):
     executable = args.pop(0)
