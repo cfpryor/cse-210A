@@ -7,3 +7,5 @@ User	1	closed	user_obs.txt	false	false	false
 Rating	2	open	rating_obs.txt	false	false	false
 Rating	2	open	rating_targets.txt	false	0.500	false
 Rating	2	open	rating_truth.txt	false	true	false
+ScopeRating	2	open	rating_targets.txt	false	false	true
+ScopeRating	2	open	rating_obs.txt	false	false	true

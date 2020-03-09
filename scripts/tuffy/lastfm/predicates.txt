@@ -20,3 +20,5 @@ item_pearson_rating	2	closed	item_pearson_rating_obs.txt	false	false	false
 rating	2	open	rating_truth.txt	false	true	false
 rating	2	open	rating_obs.txt	false	false	false
 rating	2	open	rating_targets.txt	false	false	false
+Scoperating	2	open	rating_obs.txt	false	false	true
+Scoperating	2	open	rating_targets.txt	false	false	true

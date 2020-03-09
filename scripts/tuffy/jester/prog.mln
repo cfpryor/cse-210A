@@ -5,9 +5,12 @@
 *RatingPrior(constant)
 *SimObsRating(joke, joke)
 *User(user)
+*ScopeRating(user, joke)
 
 // Target predicate
 Rating(user, joke)
+
+Rating(a, b) := ScopeRating(a, b) .
 
 // Rules
 1.0 SimObsRating(j1, j2), Rating(user, j1) => Rating(user, j2)
