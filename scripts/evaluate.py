@@ -96,7 +96,7 @@ def align_data(predictions, labels, closed):
     for label in labels:
         label_dict[(label[0], label[1])] = label[2]
 
-    for prediction in predictions: 
+    for prediction in predictions:
         pred_dict[(prediction[0], prediction[1])] = prediction[2]
 
     if closed:
@@ -179,6 +179,19 @@ def load_truth(experiment, split_dir):
     truth = load_file(os.path.join(split_dir, truth_filename))
     return truth
 
+def gather_system_info(path):
+    return_list = []
+    time = 'Elapsed (wall clock) time (h:mm:ss or m:ss):'
+    memory = 'Maximum resident set size (kbytes):'
+    with open(path, 'r') as file:
+        for line in file:
+            if time in line:
+                return_list.append(line.split(time)[-1].strip())
+            if memory in line:
+                return_list.append(line.split(memory)[-1].strip())
+
+    return return_list
+
 def main(experiment, evaluation, psl_dir, tuffy_dir):
     results = []
 
@@ -223,6 +236,9 @@ def main(experiment, evaluation, psl_dir, tuffy_dir):
         if evaluation in ['cat', 'catigorical']:
             psl_results = evaluate_catigorical(psl_data, psl_truth)
             tuffy_results = evaluate_catigorical(tuffy_data, tuffy_truth)
+
+        tuffy_results = tuffy_results + gather_system_info(os.path.join(tuffy_split_dir, 'out.err'))
+        psl_results = psl_results + gather_system_info(os.path.join(psl_split_dir, 'out.err'))
 
         psl_results = ['PSL', experiment, split] + psl_results
         tuffy_results = ['Tuffy', experiment, split] + tuffy_results
