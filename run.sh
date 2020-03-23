@@ -61,6 +61,10 @@ function run::tuffy(){
    local evidence="${split_dir}/eval/evidence.db"
    local results="${split_dir}/eval/results.txt"
 
+   if [ -f "${split_dir}/eval/query.db" ] ; then
+      query="${split_dir}/eval/query.db"
+   fi
+
    # Runs with marginal
    pushd . > /dev/null
 

@@ -1,4 +1,4 @@
-Link	2	closed	link_obs.txt	false	false	false
-HasCat	2	open	hasCat_truth.txt	false	true	false
-HasCat	2	open	hasCat_obs.txt	false	false	false
-HasCat	2	open	hasCat_targets.txt	0.01	false	false
+Link	2	closed	link_obs.txt	false	false	false	false
+HasCat	2	open	hasCat_truth.txt	false	true	false	false
+HasCat	2	open	hasCat_obs.txt	false	false	false	false
+HasCat	2	open	hasCat_targets.txt	0.01	false	false	true

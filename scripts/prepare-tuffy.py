@@ -9,6 +9,7 @@ import log
 DATA = 'data'
 HELPER = 'predicates.txt'
 OUTFILE = 'evidence.db'
+QUERY_FILE = 'query.db'
 
 EVAL = 'eval'
 LEARN = 'learn'
@@ -23,6 +24,7 @@ H_FILE = 3
 H_PRIOR = 4
 H_TRUTH = 5
 H_FORCE = 6
+H_TARGET = 7
 
 def write_data(data, path):
     os.makedirs(path, exist_ok=True)
@@ -39,13 +41,14 @@ def load_split(predicate, split):
 
     # TODO(connor) handle truth files
     if truth == TRUE:
-        return []
+        return [], []
 
     if not os.path.isfile(os.path.join(split, filename)):
         logging.error("No file named %s in %s" % (filename, split))
         return
 
     tuffy_data = []
+    predicate_data = []
     with open(os.path.join(split, filename), 'r') as tsvfile:
         reader = csv.reader(tsvfile, delimiter='\t')
 
@@ -59,6 +62,7 @@ def load_split(predicate, split):
             elif len(line) > size:
                 value = float(line[-1])
 
+            predicate_data.append(pred + '(' + ', '.join(line[0:size]) + ')')
             if value == 1.0 or value == 1:
                 tuffy_data.append(pred + '(' + ', '.join(line[0:size]) + ')')
             elif value == 0.0 or value == 0:
@@ -66,7 +70,7 @@ def load_split(predicate, split):
             else:
                 tuffy_data.append(str(value) + ' ' + pred + '(' + ', '.join(line[0:size]) + ')')
 
-    return tuffy_data
+    return tuffy_data, predicate_data
 
 def load_helper(helper_file):
     helper = []
@@ -106,7 +110,13 @@ def main(tuffy_dir, psl_dir, experiment):
                 continue
 
             for predicate in helper:
-                data = data + load_split(predicate, p_split)
+                split_data, predicate_data = load_split(predicate, p_split)
+                data = data + split_data
+
+                if predicate[H_TARGET] == TRUE:
+                    with open(os.path.join(t_split, QUERY_FILE), 'w') as out_file:
+                        out_file.write('\n'.join(predicate_data))
+
             write_data(data, t_split)
 
 def _load_args(args):

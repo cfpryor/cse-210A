@@ -1,11 +1,11 @@
-AvgJokeRatingObs	1	closed	avgJokeRatingObs_obs.txt	false	false	false
-AvgUserRatingObs	1	closed	avgUserRatingObs_obs.txt	false	false	false
-Joke	1	closed	joke_obs.txt	false	false	false
-RatingPrior	1	closed	ratingPrior_obs.txt	false	false	false
-SimObsRating	2	closed	simObsRating_obs.txt	false	false	false
-User	1	closed	user_obs.txt	false	false	false
-Rating	2	open	rating_obs.txt	false	false	false
-Rating	2	open	rating_targets.txt	0.500	false	false
-Rating	2	open	rating_truth.txt	false	true	false
-ScopeRating	2	open	rating_targets.txt	false	false	true
-ScopeRating	2	open	rating_obs.txt	false	false	true
+AvgJokeRatingObs	1	closed	avgJokeRatingObs_obs.txt	false	false	false	false
+AvgUserRatingObs	1	closed	avgUserRatingObs_obs.txt	false	false	false	false
+Joke	1	closed	joke_obs.txt	false	false	false	false
+RatingPrior	1	closed	ratingPrior_obs.txt	false	false	false	false
+SimObsRating	2	closed	simObsRating_obs.txt	false	false	false	false
+User	1	closed	user_obs.txt	false	false	false	false
+Rating	2	open	rating_obs.txt	false	false	false	false
+Rating	2	open	rating_targets.txt	0.500	false	false	true
+Rating	2	open	rating_truth.txt	false	true	false	false
+ScopeRating	2	open	rating_targets.txt	false	false	true	false
+ScopeRating	2	open	rating_obs.txt	false	false	true	false

@@ -1,24 +1,24 @@
-user	1	closed	user_obs.txt	false	false	false
-item	1	closed	item_obs.txt	false	false	false
-users_are_friends	2	closed	users_are_friends_obs.txt	false	false	false
-sim_content_items_jaccard	2	closed	sim_content_items_jaccard_obs.txt	false	false	false
-sim_pearson_items	2	closed	sim_pearson_items_obs.txt	false	false	false
-sim_cosine_items	2	closed	sim_cosine_items_obs.txt	false	false	false
-sim_adjcos_items	2	closed	sim_adjcos_items_obs.txt	false	false	false
-sim_pearson_users	2	closed	sim_pearson_users_obs.txt	false	false	false
-sim_cosine_users	2	closed	sim_cosine_users_obs.txt	false	false	false
-sim_mf_cosine_users	2	closed	sim_mf_cosine_users_obs.txt	false	false	false
-sim_mf_euclidean_users	2	closed	sim_mf_euclidean_users_obs.txt	false	false	false
-sim_mf_cosine_items	2	closed	sim_mf_cosine_items_obs.txt	false	false	false
-sim_mf_euclidean_items	2	closed	sim_mf_euclidean_items_obs.txt	false	false	false
-avg_user_rating	1	closed	avg_user_rating_obs.txt	false	false	false
-avg_item_rating	1	closed	avg_item_rating_obs.txt	false	false	false
-rated	2	closed	rated_obs.txt	false	false	false
-sgd_rating	2	closed	sgd_rating_obs.txt	false	false	false
-bpmf_rating	2	closed	bpmf_rating_obs.txt	false	false	false
-item_pearson_rating	2	closed	item_pearson_rating_obs.txt	false	false	false
-rating	2	open	rating_truth.txt	false	true	false
-rating	2	open	rating_obs.txt	false	false	false
-rating	2	open	rating_targets.txt	0.500	false	false
-Scoperating	2	open	rating_obs.txt	false	false	true
-Scoperating	2	open	rating_targets.txt	false	false	true
+user	1	closed	user_obs.txt	false	false	false	false
+item	1	closed	item_obs.txt	false	false	false	false
+users_are_friends	2	closed	users_are_friends_obs.txt	false	false	false	false
+sim_content_items_jaccard	2	closed	sim_content_items_jaccard_obs.txt	false	false	false	false
+sim_pearson_items	2	closed	sim_pearson_items_obs.txt	false	false	false	false
+sim_cosine_items	2	closed	sim_cosine_items_obs.txt	false	false	false	false
+sim_adjcos_items	2	closed	sim_adjcos_items_obs.txt	false	false	false	false
+sim_pearson_users	2	closed	sim_pearson_users_obs.txt	false	false	false	false
+sim_cosine_users	2	closed	sim_cosine_users_obs.txt	false	false	false	false
+sim_mf_cosine_users	2	closed	sim_mf_cosine_users_obs.txt	false	false	false	false
+sim_mf_euclidean_users	2	closed	sim_mf_euclidean_users_obs.txt	false	false	false	false
+sim_mf_cosine_items	2	closed	sim_mf_cosine_items_obs.txt	false	false	false	false
+sim_mf_euclidean_items	2	closed	sim_mf_euclidean_items_obs.txt	false	false	false	false
+avg_user_rating	1	closed	avg_user_rating_obs.txt	false	false	false	false
+avg_item_rating	1	closed	avg_item_rating_obs.txt	false	false	false	false
+rated	2	closed	rated_obs.txt	false	false	false	false
+sgd_rating	2	closed	sgd_rating_obs.txt	false	false	false	false
+bpmf_rating	2	closed	bpmf_rating_obs.txt	false	false	false	false
+item_pearson_rating	2	closed	item_pearson_rating_obs.txt	false	false	false	false
+rating	2	open	rating_truth.txt	false	true	false	false
+rating	2	open	rating_obs.txt	false	false	false	false
+rating	2	open	rating_targets.txt	0.500	false	false	true
+Scoperating	2	open	rating_obs.txt	false	false	true	false
+Scoperating	2	open	rating_targets.txt	false	false	true	false
